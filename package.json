@@ -1,15 +1,26 @@
 {
-  "name": "sync-icon",
+  "name": "iconizer",
   "version": "1.0.0",
-  "description": "Unique tool for creating and automatically synchronizing icons with Figma",
-  "main": "./src/index.js",
-  "type": "module",
+  "description": "Iconizer is a dynamic CLI tool that efficiently converts Figma icons into React components, facilitating agile development of user interfaces",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "dev": "node ./src/index.js"
+    "dev": "tsx ./src/index.ts",
+    "build": "tsup"
   },
   "license": "MIT",
   "devDependencies": {
     "@lucasaugustsof/eslint-config": "0.1.0",
-    "eslint": "8.56.0"
+    "@lucasaugustsof/ts-config": "0.1.0",
+    "eslint": "8.56.0",
+    "tsx": "4.7.0",
+    "typescript": "5.3.3"
+  },
+  "dependencies": {
+    "tsup": "8.0.1"
   }
 }
