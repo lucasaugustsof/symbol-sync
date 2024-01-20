@@ -24,7 +24,7 @@ async function main() {
   )
 
   const symbolSyncPage = figmaDocument.children.find(
-    (page) => page.name === 'Symbol Sync',
+    (page) => page.name === APP_NAME,
   )
 
   if (!symbolSyncPage) {
