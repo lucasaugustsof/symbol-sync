@@ -1,3 +1,85 @@
-export function sum(a: number, b: number) {
-  return a + b
+import 'dotenv/config'
+
+import { FigmaService } from '~/services/figma-service'
+
+import { getMappedIcons } from '~/utils/get-mapped-icons'
+
+interface CategoryData {
+  id: string
+  name: string
+  code?: string
 }
+
+const figmaService = new FigmaService()
+
+const categories = ['attention']
+
+async function main() {
+  const figmaDocument = await figmaService.retrieveCloudDocumentData(
+    'Y46e8c2Gf4Y9aP60fTBgEq',
+  )
+
+  const symbolSyncPage = figmaDocument.children.find(
+    (page) => page.name === 'Symbol Sync',
+  )
+
+  if (!symbolSyncPage) {
+    console.log(
+      `
+      Error: The expected 'Symbol Sync' page was not found in the Figma document.
+      Please check if the page name is correct and if it exists in the current document.
+      `,
+    )
+    return null
+  }
+
+  const categoriesWithIcons = symbolSyncPage.children
+    .filter((category) => {
+      const categoryName = category.name.toLowerCase()
+
+      if (categories.includes(categoryName)) {
+        return category
+      }
+
+      return null
+    })
+    .filter(Boolean)
+
+  const categoryData: Record<string, Array<CategoryData>> = {}
+
+  for (const categoryFound of categoriesWithIcons) {
+    const categoryName = categoryFound.name.toLowerCase()
+    categoryData[categoryName] = []
+
+    categoryFound.children.forEach(({ id, name }) => {
+      categoryData[categoryName].push({
+        id,
+        name,
+      })
+    })
+  }
+
+  // TODO - Refactor code for better modularity by breaking down large functions into smaller, clearer units
+
+  for (const category in categoryData) {
+    const categoryIconIdentifiers = categoryData[category].map(({ id }) => id)
+
+    const iconUrlMappings = await figmaService.retrieveCloudImageInfo(
+      categoryIconIdentifiers,
+    )
+
+    const mappedIcons = await getMappedIcons(iconUrlMappings)
+
+    categoryData[category] = categoryData[category].map(({ id, name }) => {
+      return {
+        id,
+        name,
+        code: mappedIcons[id],
+      }
+    })
+  }
+
+  console.log(categoryData)
+}
+
+main()
