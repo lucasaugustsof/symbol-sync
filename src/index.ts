@@ -1,8 +1,12 @@
 import 'dotenv/config'
 
+import chalk from 'chalk'
+
 import { FigmaService } from '~/services/figma-service'
 
+import { logger } from '~/utils/logger'
 import { getMappedIcons } from '~/utils/get-mapped-icons'
+import { APP_NAME } from '~/utils/const'
 
 interface CategoryData {
   id: string
@@ -24,13 +28,16 @@ async function main() {
   )
 
   if (!symbolSyncPage) {
-    console.log(
+    logger.error(
       `
-      Error: The expected 'Symbol Sync' page was not found in the Figma document.
+      Error: The expected ${chalk.green(
+        APP_NAME,
+      )} page was not found in the Figma document.
       Please check if the page name is correct and if it exists in the current document.
       `,
     )
-    return null
+
+    return
   }
 
   const categoriesWithIcons = symbolSyncPage.children

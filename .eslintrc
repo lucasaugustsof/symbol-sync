@@ -1,5 +1,8 @@
 {
   "extends": [
     "@lucasaugustsof/eslint-config/node"
-  ]
+  ],
+  "rules": {
+    "n/no-callback-literal": "off"
+  }
 }
