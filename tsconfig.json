@@ -1,3 +1,7 @@
 {
-  "extends": "@lucasaugustsof/ts-config/base.json"
+  "extends": "@lucasaugustsof/ts-config/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "~/*": ["src/*"]
+  }
 }
