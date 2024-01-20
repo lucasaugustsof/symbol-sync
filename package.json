@@ -2,6 +2,7 @@
   "name": "symbol-sync",
   "version": "1.0.0",
   "description": "Quickly turn your Figma icons into React components with SymbolSync - your creative shortcut to coding",
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -10,7 +11,8 @@
   },
   "scripts": {
     "dev": "tsx ./src/index.ts",
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest"
   },
   "license": "MIT",
   "devDependencies": {
@@ -18,7 +20,8 @@
     "@lucasaugustsof/ts-config": "0.1.0",
     "eslint": "8.56.0",
     "tsx": "4.7.0",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "vitest": "1.2.1"
   },
   "dependencies": {
     "tsup": "8.0.1"
