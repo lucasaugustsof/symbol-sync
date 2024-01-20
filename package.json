@@ -1,7 +1,7 @@
 {
-  "name": "iconizer",
+  "name": "symbol-sync",
   "version": "1.0.0",
-  "description": "Iconizer is a dynamic CLI tool that efficiently converts Figma icons into React components, facilitating agile development of user interfaces",
+  "description": "Quickly turn your Figma icons into React components with SymbolSync - your creative shortcut to coding",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
