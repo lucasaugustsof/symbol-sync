@@ -1,9 +1,12 @@
 node_modules
 dist
-example
 
 # MacOS
 .DS_Store
 
 # Environment variables
 .env
+
+# Application
+example
+symbol-sync.json

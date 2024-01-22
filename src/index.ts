@@ -4,6 +4,7 @@ import chalk from 'chalk'
 
 import { FigmaService } from '~/services/figma-service'
 
+import { getConfig } from '~/utils/get-config'
 import { logger } from '~/utils/logger'
 import { getMappedIcons } from '~/utils/get-mapped-icons'
 import { APP_NAME } from '~/utils/const'
@@ -16,12 +17,10 @@ interface CategoryData {
 
 const figmaService = new FigmaService()
 
-const categories = ['attention']
-
 async function main() {
-  const figmaDocument = await figmaService.retrieveCloudDocumentData(
-    'Y46e8c2Gf4Y9aP60fTBgEq',
-  )
+  const { fileId, categories } = await getConfig()
+
+  const figmaDocument = await figmaService.retrieveCloudDocumentData(fileId)
 
   const symbolSyncPage = figmaDocument.children.find(
     (page) => page.name === APP_NAME,
@@ -30,7 +29,7 @@ async function main() {
   if (!symbolSyncPage) {
     logger.error(
       `
-      Error: The expected ${chalk.green(
+      Error: The expected ${chalk.white(
         APP_NAME,
       )} page was not found in the Figma document.
       Please check if the page name is correct and if it exists in the current document.
