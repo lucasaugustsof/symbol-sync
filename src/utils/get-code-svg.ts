@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export async function getCodeSvg(url: string) {
-  const code = await axios(url, {
+export async function getCodeSvg(url: string): Promise<string> {
+  const code = await axios<string>(url, {
     responseType: 'text',
   })
 
