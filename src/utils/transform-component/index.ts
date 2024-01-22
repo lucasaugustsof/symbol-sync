@@ -14,7 +14,7 @@ export function transformComponent(_componentName: string, svgCode: string) {
     ref: true,
     replaceAttrValues: {
       '#000': '{color}',
-      '1em': '{sizeMapper[size]}',
+      '1em': '{sizeMapper[size] ?? sizeMapper.default}',
     },
   }
 
