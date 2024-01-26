@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@lucasaugustsof/eslint-config": "0.1.0",
+    "@lucasaugustsof/eslint-config": "1.0.1",
     "@lucasaugustsof/ts-config": "0.1.0",
     "@types/node": "20.11.5",
     "eslint": "8.56.0",
