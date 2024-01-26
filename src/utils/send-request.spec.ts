@@ -2,10 +2,12 @@ import { describe, it, expect } from 'vitest'
 
 import { sendRequest } from './send-request'
 
+const base = 'https://httpbin.org'
+
 describe('utils / send-request', () => {
   it('should return all data brought via HTTP request', async () => {
     const { data } = await sendRequest({
-      base: 'https://httpbin.org',
+      base,
       endpoint: '/json',
     })
 
@@ -14,7 +16,7 @@ describe('utils / send-request', () => {
 
   it('should return the request error message and statusCode', async () => {
     const { error } = await sendRequest({
-      base: 'https://httpbin.org',
+      base,
       endpoint: `/status/404`,
     })
 
@@ -25,7 +27,7 @@ describe('utils / send-request', () => {
     const errorReason = 'Internal server error'
 
     const { error } = await sendRequest({
-      base: 'https://httpbin.org',
+      base,
       endpoint: `/status/404`,
       config: {
         customErrorMessage: errorReason,
