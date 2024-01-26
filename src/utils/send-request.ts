@@ -3,7 +3,9 @@ import path from 'node:path'
 type HttpRequestOptions = {
   base: string
   endpoint?: string
-  config?: RequestInit
+  config?: RequestInit & {
+    customErrorMessage?: string
+  }
 }
 
 type HttpResponse<T> = {
@@ -28,17 +30,22 @@ export async function sendRequest<T>({
   endpoint,
   config,
 }: HttpRequestOptions): Promise<HttpResponse<T>> {
-  let response
-
-  let data
+  let data = null
   let error: HttpErrorResponse | null = null
 
+  const response = await fetch(path.join(base, endpoint ?? ''), config)
+
   try {
-    response = await fetch(path.join(base, endpoint ?? ''), config)
+    if (!response.ok) {
+      throw Error(
+        config?.customErrorMessage ?? `HTTP error status: ${response.status}`,
+      )
+    }
+
     data = await response.json()
   } catch (err) {
     error = {
-      statusCode: response?.status,
+      statusCode: response.status,
       message: err.message,
     }
   }
