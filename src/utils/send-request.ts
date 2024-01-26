@@ -4,6 +4,7 @@ type HttpRequestOptions = {
   base: string
   endpoint?: string
   config?: RequestInit & {
+    responseType?: 'text' | 'json'
     customErrorMessage?: string
   }
 }
@@ -42,7 +43,7 @@ export async function sendRequest<T>({
       )
     }
 
-    data = await response.json()
+    data = await response[config?.responseType ?? 'json']()
   } catch (err) {
     error = {
       statusCode: response.status,

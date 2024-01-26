@@ -36,4 +36,16 @@ describe('utils / send-request', () => {
 
     expect(error?.message).toBe(errorReason)
   })
+
+  it('should return the response type in text format', async () => {
+    const { data } = await sendRequest({
+      base,
+      endpoint: '/html',
+      config: {
+        responseType: 'text',
+      },
+    })
+
+    expect(data).toBeTypeOf('string')
+  })
 })

@@ -1,9 +1,18 @@
-import axios from 'axios'
+import { sendRequest } from './send-request'
+import { logger } from './logger'
 
 export async function getCodeSvg(url: string): Promise<string> {
-  const code = await axios<string>(url, {
-    responseType: 'text',
+  const { data, error } = await sendRequest<string>({
+    base: url,
+    config: {
+      responseType: 'text',
+    },
   })
 
-  return code.data
+  if (error) {
+    logger.error(error.message!)
+    process.exit(0)
+  }
+
+  return data
 }
