@@ -1,50 +1,50 @@
-import axios from 'axios'
+import { Figma } from '~/namespaces/figma'
 
-import { Figma } from '~/models/figma'
+import { sendRequest } from '~/utils/send-request'
 
 export class FigmaService {
-  private API = axios.create({
-    baseURL: 'https://api.figma.com/v1',
-  })
+  private _baseUrl = 'https://api.figma.com/v1'
+  private _headers = {
+    'X-Figma-Token': String(process.env.FIGMA_ACCESS_TOKEN),
+  }
 
   private _documentId: string = ''
 
-  constructor() {
-    this.API.interceptors.request.use((config) => {
-      config.headers['X-Figma-Token'] = String(process.env.FIGMA_ACCESS_TOKEN)
-
-      return config
-    })
-  }
-
   async retrieveCloudDocumentData(documentId: string) {
-    try {
-      this._documentId = documentId
+    this._documentId = documentId
 
-      const response = await this.API.get<Record<'document', Figma.Document>>(
-        `/files/${documentId}`,
-      )
-      const { document } = response.data
+    const { data, error } = await sendRequest<
+      Record<'document', Figma.Document>
+    >({
+      base: this._baseUrl,
+      endpoint: `/files/${documentId}`,
+      config: {
+        headers: this._headers,
+      },
+    })
 
-      return document
-    } catch (err) {
-      throw new Error(err)
+    if (error) {
+      throw Error(error.message)
     }
+
+    return data.document
   }
 
   async retrieveCloudImageInfo(identifiers: string[]) {
-    try {
-      const ids = identifiers.join(',')
+    const ids = identifiers.join(',')
 
-      const response = await this.API.get<Figma.Image>(
-        `/images/${this._documentId}?ids=${ids}&format=svg`,
-      )
+    const { data, error } = await sendRequest<Figma.Image>({
+      base: this._baseUrl,
+      endpoint: `/images/${this._documentId}?ids=${ids}&format=svg`,
+      config: {
+        headers: this._headers,
+      },
+    })
 
-      const { images } = response.data
-
-      return images
-    } catch (err) {
-      throw new Error(err)
+    if (error) {
+      throw Error(error.message)
     }
+
+    return data.images
   }
 }
