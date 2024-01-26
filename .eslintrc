@@ -3,6 +3,7 @@
     "@lucasaugustsof/eslint-config/node"
   ],
   "rules": {
-    "n/no-callback-literal": "off"
+    "n/no-callback-literal": "off",
+    "@typescript-eslint/no-namespace": "off"
   }
 }
