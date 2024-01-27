@@ -13,5 +13,7 @@ export async function getCodeSvg(url: string): Promise<string> {
     logger.error(error.message!)
   }
 
-  return data
+  const codeWithoutXmlns = data.replace(/xmlns=".*?"/g, '')
+
+  return codeWithoutXmlns
 }
