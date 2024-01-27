@@ -3,8 +3,8 @@ import camelcase from 'camelcase'
 
 import { reactTemplate } from './templates'
 
-export function transformComponent(_componentName: string, svgCode: string) {
-  const componentName = camelcase(_componentName, {
+export function transformJSX(_componentName: string, svgCode: string) {
+  const componentName = camelcase(_componentName + '-icon', {
     pascalCase: true,
   })
 
@@ -37,7 +37,5 @@ export function transformComponent(_componentName: string, svgCode: string) {
     },
   )
 
-  const codeWithoutXmlns = code.replace(/xmlns=".*?"/g, '')
-
-  return codeWithoutXmlns
+  return code
 }

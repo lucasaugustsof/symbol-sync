@@ -4,10 +4,12 @@ import chalk from 'chalk'
 
 import { FigmaService } from '~/services/figma-service'
 
-import { getConfig } from '~/utils/get-config'
-import { logger } from '~/utils/logger'
-import { getMappedIcons } from '~/utils/get-mapped-icons'
 import { APP_NAME } from '~/utils/const'
+import { createComponent } from '~/utils/create-component'
+import { getConfig } from '~/utils/get-config'
+import { getMappedIcons } from '~/utils/get-mapped-icons'
+import { libBuilder } from '~/utils/lib-builder'
+import { logger } from '~/utils/logger'
 
 interface CategoryData {
   id: string
@@ -51,7 +53,7 @@ async function main() {
     })
     .filter(Boolean)
 
-  const categoryData: Record<string, Array<CategoryData>> = {}
+  const categoryData: Record<string, CategoryData[]> = {}
 
   for (const categoryFound of categoriesWithIcons) {
     const categoryName = categoryFound.name.toLowerCase()
@@ -85,7 +87,22 @@ async function main() {
     })
   }
 
-  console.log(categoryData)
+  // TODO - Leave this variable in the config file
+
+  const entry = './src/components'
+
+  // TODO - Refactor this function after CLI implementation
+
+  for await (const icon of categoryData['attention']) {
+    await createComponent(entry, {
+      name: icon.name,
+      code: icon.code!,
+    })
+  }
+
+  await libBuilder(entry, {
+    outDir: 'lib',
+  })
 }
 
 main()
