@@ -11,7 +11,6 @@ export async function getCodeSvg(url: string): Promise<string> {
 
   if (error) {
     logger.error(error.message!)
-    process.exit(0)
   }
 
   return data
