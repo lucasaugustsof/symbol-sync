@@ -26,7 +26,7 @@ export async function getConfig(): Promise<ConfigProperties> {
 
   if (!isConfigFileExists) {
     logger.error(`
-      Unable to locate the configuration file. Please check the root of your project to
+      Error: Unable to locate the configuration file. Please check the root of your project to
       see if the ${chalk.white('symbol-sync.json')} file exists.
     `)
   }
