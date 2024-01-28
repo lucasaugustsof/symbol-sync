@@ -1,6 +1,7 @@
 import { Command } from 'commander'
 import prompts from 'prompts'
 import chalk from 'chalk'
+import ora from 'ora'
 
 import { FigmaService } from '~/services/figma-service'
 
@@ -45,9 +46,15 @@ class RunCommand extends Command {
   async execute(opts: CommandOpts) {
     this.config = await getConfig()
 
+    const loadingFigmaData = ora(
+      'Loading data from Figma, please wait...',
+    ).start()
+
     const figmaDocument = await figmaService.retrieveCloudDocumentData(
       this.config.fileId,
     )
+
+    loadingFigmaData.succeed('Figma data loaded successfully!')
 
     const symbolSyncPage = figmaDocument.children.find(
       (page) => page.name === APP_NAME,
@@ -118,12 +125,20 @@ class RunCommand extends Command {
       process.exit(0)
     }
 
+    const loadingSyncingSelectedCategoryIcons = ora(
+      'Loading and syncing icons from selected category, please wait...',
+    ).start()
+
     categoryData[nameSelectedCategory] = await this.saveIconToCategory(
       categoryData[nameSelectedCategory],
     )
 
     await this.createIconsForSelectedCategory(
       categoryData[nameSelectedCategory],
+    )
+
+    loadingSyncingSelectedCategoryIcons.succeed(
+      `Category ${nameSelectedCategory} icons successfully uploaded and synced!`,
     )
 
     if (opts.build) {
