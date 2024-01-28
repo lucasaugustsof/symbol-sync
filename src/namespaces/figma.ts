@@ -1,5 +1,5 @@
 export namespace Figma {
-  export type NodeType = 'DOCUMENT'
+  export type NodeType = 'DOCUMENT' | 'FRAME'
 
   export interface BaseNode {
     id: string

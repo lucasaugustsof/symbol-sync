@@ -5,14 +5,21 @@ import chalk from 'chalk'
 
 import { logger } from './logger'
 
-type ConfigProperties = {
+export type ConfigProperties = {
   fileId: string
   categories: string[]
+  entryDir: string
+  outDir: string
 }
 
 export const configFileDir = path.join(process.cwd(), 'symbol-sync.json')
 
-const requiredProperties = ['fileId', 'categories'] as const
+const requiredProperties = [
+  'fileId',
+  'categories',
+  'entryDir',
+  'outDir',
+] as const
 
 export async function getConfig(): Promise<ConfigProperties> {
   const isConfigFileExists = existsSync(configFileDir)
@@ -43,8 +50,14 @@ export async function getConfig(): Promise<ConfigProperties> {
   if (propertiesNotFound.length > 0) {
     logger.error(`
       Please ensure proper functionality by correctly setting the following properties
-      in your configuration file: ${propertiesNotFound.join(',')}.
+      in your configuration file: ${chalk.white(propertiesNotFound.join(','))}.
   `)
+  }
+
+  const isEntryDirExists = existsSync(data.entryDir)
+
+  if (!isEntryDirExists) {
+    await fs.mkdir(data.entryDir)
   }
 
   return data

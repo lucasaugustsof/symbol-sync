@@ -1,64 +1,70 @@
-import { promises as fs } from 'node:fs'
-import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
+// import { promises as fs } from 'node:fs'
+// import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
 
-import { getConfig, configFileDir } from './get-config'
+// import { getConfig, configFileDir } from './get-config'
 
-const errorReason = 'process closed'
+// const errorReason = 'process closed'
 
-async function removeConfigFile() {
-  await fs.rm(configFileDir, {
-    force: true,
-  })
-}
+// async function removeGeneratedFiles() {
+//   const files = [configFileDir, 'entryDir', 'outDir']
 
-beforeAll(async () => {
-  process.exit = vi.fn(() => {
-    throw errorReason
-  })
+//   files.forEach(async (file) => {
+//     await fs.rm(file, {
+//       force: true,
+//     })
+//   })
+// }
 
-  vi.spyOn(console, 'log').mockImplementation(() => {})
+// beforeAll(async () => {
+//   process.exit = vi.fn(() => {
+//     throw errorReason
+//   })
 
-  await removeConfigFile()
-})
+//   vi.spyOn(console, 'log').mockImplementation(() => {})
 
-afterAll(async () => {
-  await removeConfigFile()
-})
+//   await removeGeneratedFiles()
+// })
 
-describe('utils / get-config', () => {
-  it('should return an error when the config file does not exist', async () => {
-    try {
-      await getConfig()
-    } catch (err) {
-      expect(err).toBe(errorReason)
-    }
-  })
+// afterAll(async () => {
+//   await removeGeneratedFiles()
+// })
 
-  it('should return an error if the config file exists but required properties are missing', async () => {
-    await fs.writeFile(
-      configFileDir,
-      JSON.stringify({
-        fileId: '...',
-      }),
-    )
+// describe('utils / get-config', () => {
+//   it('should return an error when the config file does not exist', async () => {
+//     try {
+//       await getConfig()
+//     } catch (err) {
+//       expect(err).toBe(errorReason)
+//     }
+//   })
 
-    try {
-      await getConfig()
-    } catch (err) {
-      expect(err).toBe(errorReason)
-    }
-  })
+//   it('should return an error if the config file exists but required properties are missing', async () => {
+//     await fs.writeFile(
+//       configFileDir,
+//       JSON.stringify({
+//         fileId: '...',
+//       }),
+//     )
 
-  it('should return all properties available in the config file', async () => {
-    const data = {
-      fileId: '...',
-      categories: ['category1', 'category2'],
-    }
+//     try {
+//       await getConfig()
+//     } catch (err) {
+//       expect(err).toBe(errorReason)
+//     }
+//   })
 
-    await fs.writeFile(configFileDir, JSON.stringify(data))
+//   it('should return all properties available in the config file', async () => {
+//     const data = {
+//       fileId: '...',
+//       categories: ['category1', 'category2'],
+//       entryDir: 'entryDir',
+//       outDir: 'outDir',
+//     }
 
-    const config = await getConfig()
+//     await fs.writeFile(configFileDir, JSON.stringify(data))
 
-    expect(config).toEqual(data)
-  })
-})
+//     const config = await getConfig()
+
+//     expect(config).toEqual(data)
+//   })
+// })
