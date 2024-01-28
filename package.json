@@ -19,6 +19,7 @@
     "@lucasaugustsof/eslint-config": "1.0.1",
     "@lucasaugustsof/ts-config": "0.1.0",
     "@types/node": "20.11.5",
+    "@types/prompts": "2.4.9",
     "@types/react": "18.2.48",
     "eslint": "8.56.0",
     "tsx": "4.7.0",
@@ -35,6 +36,7 @@
     "commander": "11.1.0",
     "dotenv": "16.3.2",
     "ora": "8.0.1",
+    "prompts": "2.4.2",
     "tsup": "8.0.1"
   }
 }

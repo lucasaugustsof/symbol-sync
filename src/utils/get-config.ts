@@ -5,7 +5,7 @@ import chalk from 'chalk'
 
 import { logger } from './logger'
 
-type ConfigProperties = {
+export type ConfigProperties = {
   fileId: string
   categories: string[]
   entryDir: string

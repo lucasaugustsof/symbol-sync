@@ -1,12 +1,12 @@
 import { Command } from 'commander'
-
+import prompts from 'prompts'
 import chalk from 'chalk'
 
 import { FigmaService } from '~/services/figma-service'
 
 import { APP_NAME } from '~/utils/const'
 import { createComponent } from '~/utils/create-component'
-import { getConfig } from '~/utils/get-config'
+import { getConfig, type ConfigProperties } from '~/utils/get-config'
 import { getMappedIcons } from '~/utils/get-mapped-icons'
 import { libBuilder } from '~/utils/lib-builder'
 import { logger } from '~/utils/logger'
@@ -24,6 +24,13 @@ type CategoryData = {
 const figmaService = new FigmaService()
 
 class RunCommand extends Command {
+  private config: ConfigProperties = {
+    fileId: '',
+    categories: [],
+    entryDir: '',
+    outDir: '',
+  }
+
   constructor() {
     super()
 
@@ -36,9 +43,11 @@ class RunCommand extends Command {
   }
 
   async execute(opts: CommandOpts) {
-    const { fileId, categories } = await getConfig()
+    this.config = await getConfig()
 
-    const figmaDocument = await figmaService.retrieveCloudDocumentData(fileId)
+    const figmaDocument = await figmaService.retrieveCloudDocumentData(
+      this.config.fileId,
+    )
 
     const symbolSyncPage = figmaDocument.children.find(
       (page) => page.name === APP_NAME,
@@ -61,13 +70,23 @@ class RunCommand extends Command {
       .filter((category) => {
         const categoryName = category.name.toLowerCase()
 
-        if (categories.includes(categoryName)) {
+        if (
+          category.type === 'FRAME' &&
+          this.config.categories.includes(categoryName)
+        ) {
           return category
         }
 
         return null
       })
       .filter(Boolean)
+
+    if (!categoriesWithIcons.length) {
+      logger.error(`
+        Error: The icon categories specified in the settings were not found.
+        Please check if the names of the categories are correct and try again.
+      `)
+    }
 
     const categoryData: Record<string, CategoryData[]> = {}
 
@@ -83,42 +102,56 @@ class RunCommand extends Command {
       })
     }
 
-    // TODO - Refactor code for better modularity by breaking down large functions into smaller, clearer units
-
-    for (const category in categoryData) {
-      const categoryIconIdentifiers = categoryData[category].map(({ id }) => id)
-
-      const iconUrlMappings = await figmaService.retrieveCloudImageInfo(
-        categoryIconIdentifiers,
-      )
-
-      const mappedIcons = await getMappedIcons(iconUrlMappings)
-
-      categoryData[category] = categoryData[category].map(({ id, name }) => {
+    const { nameSelectedCategory } = await prompts({
+      type: 'select',
+      name: 'nameSelectedCategory',
+      message: 'What category of icons would you like to synchronize?',
+      choices: Object.keys(categoryData).map((category) => {
         return {
-          id,
-          name,
-          code: mappedIcons[id],
+          title: category,
+          value: category,
         }
-      })
-    }
+      }),
+    })
 
-    // TODO - Leave this variable in the config file
+    categoryData[nameSelectedCategory] = await this.saveIconToCategory(
+      categoryData[nameSelectedCategory],
+    )
 
-    const entry = './src/components'
-
-    // TODO - Refactor this function after CLI implementation
-
-    for await (const icon of categoryData['attention']) {
-      await createComponent(entry, {
-        name: icon.name,
-        code: icon.code!,
-      })
-    }
+    await this.createIconsForSelectedCategory(
+      categoryData[nameSelectedCategory],
+    )
 
     if (opts.build) {
-      await libBuilder(entry, {
-        outDir: 'lib',
+      await libBuilder(this.config.entryDir, {
+        outDir: this.config.outDir,
+      })
+    }
+  }
+
+  async saveIconToCategory(category: CategoryData[]) {
+    const categoryIconIdentifiers = category.map(({ id }) => id)
+
+    const iconUrlMappings = await figmaService.retrieveCloudImageInfo(
+      categoryIconIdentifiers,
+    )
+
+    const mappedIcons = await getMappedIcons(iconUrlMappings)
+
+    return category.map(({ id, name }) => {
+      return {
+        id,
+        name,
+        code: mappedIcons[id],
+      }
+    })
+  }
+
+  async createIconsForSelectedCategory(category: CategoryData[]) {
+    for await (const icon of category) {
+      await createComponent(this.config.entryDir, {
+        name: icon.name,
+        code: icon.code!,
       })
     }
   }
