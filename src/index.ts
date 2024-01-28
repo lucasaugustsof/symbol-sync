@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import 'dotenv/config'
-
 import { Command } from 'commander'
 
 import { name, description, version } from '../package.json'

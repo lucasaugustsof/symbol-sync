@@ -1,3 +1,5 @@
+import { env } from '../env'
+
 import { Figma } from '~/namespaces/figma'
 
 import { sendRequest } from '~/utils/send-request'
@@ -5,7 +7,7 @@ import { sendRequest } from '~/utils/send-request'
 export class FigmaService {
   private _baseUrl = 'https://api.figma.com/v1'
   private _headers = {
-    'X-Figma-Token': String(process.env.FIGMA_ACCESS_TOKEN),
+    'X-Figma-Token': env.FIGMA_ACCESS_TOKEN!,
   }
 
   private _documentId: string = ''
