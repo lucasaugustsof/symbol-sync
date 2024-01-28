@@ -4,6 +4,7 @@ import path from 'node:path'
 import { build, Options } from 'tsup'
 
 import { getCreatedComponentFiles } from './get-created-component-files'
+import { logger } from './logger'
 
 export async function libBuilder(entry: string, options?: Options) {
   try {
@@ -31,8 +32,13 @@ export async function libBuilder(entry: string, options?: Options) {
       silent: true,
       ...options,
     })
-    // Successful feedback here
+
+    logger.success(`
+      Success: Icon library generated successfully!
+    `)
   } catch (error) {
-    // Error feedback here
+    logger.error(`
+      Error: Unable to generate icon library. Try again.
+    `)
   }
 }
