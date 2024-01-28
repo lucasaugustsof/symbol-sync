@@ -114,6 +114,10 @@ class RunCommand extends Command {
       }),
     })
 
+    if (!nameSelectedCategory) {
+      process.exit(0)
+    }
+
     categoryData[nameSelectedCategory] = await this.saveIconToCategory(
       categoryData[nameSelectedCategory],
     )
