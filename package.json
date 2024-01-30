@@ -1,12 +1,15 @@
 {
   "name": "symbol-sync",
-  "version": "1.0.0-alpha",
+  "version": "1.0.1-alpha",
   "description": "Quickly turn your Figma icons into React components with Symbol Sync - your creative shortcut to coding",
   "type": "module",
   "bin": "./dist/index.js",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "engines": {
     "node": ">=18"
   },
