@@ -28,7 +28,6 @@ Symbol Sync is a powerful tool for devs and designers working with Figma and Rea
 5. To ensure the application correctly reads the content, it is essential to create a page in Figma named `Symbol Sync`. This step is crucial as the application specifically looks for a page with this name to synchronize the icons.
 <br/><br/><img src="./.github/figma-pages.png"/>
 6. Continuing in Figma, it's essential to create a FRAME that will serve as a container for icons of a specific category. Name this FRAME according to the icon category it will represent. This step is crucial for the correct functioning of the application. Once the FRAME is established, you can begin filling it with the icons that belong to that specific category.
-    video-aqui
 7. Now, before creating your icons, ensure that the names are formatted correctly, following the example `alert-circle`, and that the color is set to `#000` (black). These details are essential to ensure proper functionality.
 8. Now you can run the following command in your project to generate the icon components:
     ```zsh
