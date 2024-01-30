@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "tsx ./src/index.ts",
     "build": "tsup ./src/index.ts --format cjs,esm --dts",
-    "test": "vitest"
+    "test": "vitest",
+    "prepare": "husky"
   },
   "license": "MIT",
   "devDependencies": {
@@ -22,6 +23,7 @@
     "@types/prompts": "2.4.9",
     "@types/react": "18.2.48",
     "eslint": "8.56.0",
+    "husky": "9.0.7",
     "tsx": "4.7.0",
     "typescript": "5.3.3",
     "vitest": "1.2.1"
