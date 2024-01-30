@@ -26,8 +26,7 @@ Symbol Sync is a powerful tool for devs and designers working with Figma and Rea
 
     To obtain the Figma file ID, access the file's URL in your browser. The ID is the string of characters located after '/file/' in the URL. For example, in the URL 'https://www.figma.com/file/YOUR_FILE_ID/Symbol-Sync?type=design&node-id=92%3A2&mode=design&t=eTB5w36Qet43QQik-1', the file ID is `YOUR_FILE_ID`.
 5. To ensure the application correctly reads the content, it is essential to create a page in Figma named `Symbol Sync`. This step is crucial as the application specifically looks for a page with this name to synchronize the icons.
-<br/>
-    <img src="./.github/figma-pages.png"/>
+<br/><br/><img src="./.github/figma-pages.png"/>
 6. Continuing in Figma, it's essential to create a FRAME that will serve as a container for icons of a specific category. Name this FRAME according to the icon category it will represent. This step is crucial for the correct functioning of the application. Once the FRAME is established, you can begin filling it with the icons that belong to that specific category.
     video-aqui
 7. Now, before creating your icons, ensure that the names are formatted correctly, following the example `alert-circle`, and that the color is set to `#000` (black). These details are essential to ensure proper functionality.
