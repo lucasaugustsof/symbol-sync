@@ -17,6 +17,8 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "18.6.0",
+    "@commitlint/config-conventional": "18.6.0",
     "@lucasaugustsof/eslint-config": "1.0.1",
     "@lucasaugustsof/ts-config": "0.1.0",
     "@types/node": "20.11.5",
